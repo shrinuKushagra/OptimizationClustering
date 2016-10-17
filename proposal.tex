@@ -59,7 +59,7 @@
 \begin{abstract} 
 Put here a brief summary of the project: what is it about? what is the main goal? how are you going to evaluate it? The proposal is expected to be 1-2 pages, so be concise and to the point.
 
-In this project, we aim to first formulate the $k$-median clustering objective as a linear program. We then hope to invent an efficient algorithm that returns an optimal, or close to optimal, clustering with high probability for "nice" datasets, or datasets for which the clusters can be reasonable separated. 
+In this project, we aim to formulate the $k$-median clustering objective as a linear program. We will then define a notion of "niceness" of data such that we can invent a polytime algorithm that returns an optimal, or close to optimal, clustering with high probability for "nice" datasets. 
 
 We plan to evaluate our algorithm using worst-case analysis over the set of possible inputs that have the designated niceness property, and also by implementing the algorithm to show that it runs efficiently in practice over datasets with this niceness property.
 \end{abstract} 
@@ -67,9 +67,9 @@ We plan to evaluate our algorithm using worst-case analysis over the set of poss
 \section{Introduction}
 In this section you are going to present a brief background and motivation about your project. Why is it interesting/significant? How does it relate to the course?
 
-Clustering is a technique of unsupervised learning that attempts to group data points that are similar in features into "clusters". It can be used both as a tool to understand the underlying distibution of data or as a preprocessing step to alleviate the hardness of classification. While clustering methods such as $k$-means and $k$-median are efficient and widely used in practice, many clustering objectives are NP-hard to optimize over all data sets. Because of this, a primary aim of recent clustering research is to show instead that there exist  clustering algorithms that perform efficiently over the set of all data sets that are likely to be seen in practice.
+Clustering is a technique of unsupervised learning that attempts to group data points that are similar in features into "clusters". It can be used both as a tool to understand the underlying distibution of data or as a preprocessing step to alleviate the hardness of classification. While clustering methods such as $k$-means and $k$-median are efficient and widely used in practice, many clustering objectives are NP-hard to optimize over all data sets. Because of this, a primary aim of recent clustering research is to show instead that there exist clustering algorithms that perform efficiently over the set of all data sets that are likely to be seen in practice. Many of these data sets have some "nice" structure that would be useful to exploit. Ideally, we want a polytime algorithm that finds an optimal clustering for each dataset that possesses this "nice" structure.
 
-In this project, we will examine the $k$-median clustering problem. $K$-median can be formulated as a convex optimization problem, where the objective is to find $k$ cluster centers such that the total sum of the distance from each data point to its cluster center is minimized. We will attempt to formulate the $k$-median problem as a linear program with the Manhattan distance metric, then use this formulation to invent and implement an algorithm that finds an optimal, or close to optimal, clustering for a large fraction of datasets.
+In this project, we will specifically examine the $k$-median clustering problem. $K$-median can be formulated as a convex optimization problem, where the objective is to find $k$ cluster centers such that the total sum of the distance from each data point to its cluster center is minimized. We will attempt to formulate the $k$-median problem as a linear program with the Manhattan distance metric, then use this formulation to invent and implement an algorithm that finds an optimal or near-optimal clustering for the set of datasets that have some "nice" structure that will be later defined.
 
 \section{Related Works}
 The $k$-means and $k$-median are by far the two most popular clustering algorithm. $k$-means tries to find a clustering which minimizes the following objective function
@@ -80,14 +80,14 @@ The $k$-median objective is similar to the $k$-means objective. An important dis
 \begin{align*}
 	\min_{c_1, \ldots, c_k \in \mc X} \sum_{i=1}^k \sum_{x \in C_i} \|x-c_i\|_2 
 \end{align*}
-Instead of the two-norm, other distance functions like $1$-norm etc. are also possible. Both the $k$-means and the $k$-median problem have been shown to be NP-Hard. However, they have been successfully employed in practice on a lot of applications. Hence, recent research aims to bridge this gap by arguing that clustering is easy if the data has some nice properties. One of the such properties is $\alpha$-center proximity. 
+Instead of the two-norm, other distance functions like $1$-norm etc. are also possible. Both the $k$-means and the $k$-median problem have been shown to be NP-hard. However, they have been successfully employed in practice on a lot of applications. Hence, recent research aims to bridge this gap by arguing that clustering is easy if the data has some nice properties. One of the such properties is $\alpha$-center proximity. 
 
 A clustering $\mc C = \{C_1, \ldots, C_k\}$ satisfies $\alpha$-center proximity w.r.t $\mc X$ and $k$ if there exist centers $c_1, \ldots, c_k$  such that for all $x \in C_i$ and $i\neq j$, $$\alpha d(x, c_i) < d(x, c_j)$$
 
 Researchers have shown that if the optimal clustering satisfies $\alpha$-center proximity then it is possible to find the optimal solution in polynomial time. The algorithm works by building a hierarchical clustering tree on the input and then finding a pruning of minimum cost. However, the notion of $\alpha$-center proximity is too restrict. Recent attempts have been made to relax it by adding noise to the data. In this work, we wish to study clustering as an optimization problem in the presence of such noisy points.  
 
 \section{Proposed Work}
-All the clustering algorithms discussed above are agnostic to the structure of the data. We want to pose an optimization problem which takes that into account. Clustering algorithm is essentially about choosing centers $c_1, \ldots, c_k$. What makes a `good center'? Intuitively a good center should have a `lot' of points close-by. Also, any two centers should be far apart from each other. We formulate the following optimization problem
+All the clustering algorithms discussed above are agnostic to the structure of the data. We want to pose an optimization problem which takes that into account. Clustering algorithm is essentially about choosing centers $c_1, \ldots, c_k$. What makes a "good" center? Intuitively a good center should have a lot of points close-by. Also, any two centers should be far apart from each other. We formulate the following optimization problem
 \begin{align*}
 	&\min_{c_1, \ldots, c_k \in \mc X} \sum_{i=1}^k \sum_{x \in N_t(c_i)} \|x-c_i\|_1 \\
 	& \text{such that } \|c_i - c_j\|_1 \ge \alpha  \sum_{x \in N_t(c_i)} \|x-c_i\|_1 \text{ for all }i, j
@@ -97,10 +97,10 @@ Here, parameters $\alpha < 1$ and $t > 1$ are known to the optimization algorith
 
 For this project, we want to achieve the following:
 \begin{itemize}
-\item An algorithm to solve the above optimization problem OR prove that the optimization is NP-Hard. 
-\item If the above is (or `seems') NP-Hard then propose a relaxation.
-\item Show that if the data has some `nice' (suitable defined) structure, then our algorithm finds that structure.
-\item Implement the algorithm on a dataset (like MNIST, BagOfWords etc) and compare against other clustering algorithms.
+\item An algorithm to solve the above optimization problem OR prove that the optimization is NP-hard. 
+\item If the above is (or "seems") NP-hard then propose a relaxation.
+\item Show that if the data has some "nice" (suitable defined) structure, then our algorithm finds that structure.
+\item Implement the algorithm on a dataset (such as MNIST or BagOfWords) and compare against other clustering algorithms.
 \end{itemize}
 
 %For your own sake, you might want to lay out a time line, so that you can keep a good track of your project.
