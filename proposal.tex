@@ -68,8 +68,6 @@ Clustering is a technique of unsupervised learning that attempts to group data p
 In this project, we will examine the $k$-median clustering problem. $K$-median can be formulated as a convex optimization problem, where the objective is to find $k$ cluster centers such that the total sum of the distance from each data point to its cluster center is minimized. We will attempt to formulate the $k$-median problem as a linear program with the Manhattan distance metric, then use this formulation to invent and implement an algorithm that finds an optimal, or close to optimal, clustering for a large fraction of datasets.
 
 \section{Related Works}
-Perform an initial review of relevant literature. Has your problem, or one of similar nature, been considered before? By whom? What are the differences or limitations (if any)? 
-
 The $k$-means and $k$-median are by far the two most popular clustering algorithm. $k$-means tries to find a clustering which minimizes the following objective function
 \begin{align*}
 	\min_{c_1, \ldots, c_k} \sum_{i=1}^k \sum_{x \in C_i} \|x-c_i\|_2^2 
@@ -82,7 +80,8 @@ Instead of the two-norm, other distance functions like $1$-norm etc. are also po
 
 A clustering $\mc C = \{C_1, \ldots, C_k\}$ satisfies $\alpha$-center proximity w.r.t $\mc X$ and $k$ if there exist centers $c_1, \ldots, c_k$  such that for all $x \in C_i$ and $i\neq j$, $$\alpha d(x, c_i) < d(x, c_j)$$
 
-Researchers have shown that if the optimal clustering satisfies $\alpha$-center proximity then it is possible to find the optimal solution in polynomial time. 
+Researchers have shown that if the optimal clustering satisfies $\alpha$-center proximity then it is possible to find the optimal solution in polynomial time. The algorithm works by building a hierarchical clustering tree on the input and then finding a pruning of minimum cost. However, the notion of $\alpha$-center proximity is too restrict. Recent attempts have been made to relax it by adding noise to the data. In this work, we wish to study clustering as an optimization problem in the presence of such noisy points.  
+
 \section{Proposed Work}
 All the clustering algorithms discussed above are agnostic to the structure of the data. We want to pose an optimization problem which takes that into account. Clustering algorithm is essentially about choosing centers $c_1, \ldots, c_k$. What makes a `good center'? Intuitively a good center should have a `lot' of points close-by. Also, any two centers should be far apart from each other. We formulate the following optimization problem
 \begin{align*}
