@@ -82,7 +82,7 @@ The $k$-median objective is similar to the $k$-means objective. An important dis
 \begin{align*}
 	\min_{c_1, \ldots, c_k \in \mc X} \sum_{i=1}^k \sum_{x \in C_i} \|x-c_i\|_2 
 \end{align*}
-Instead of the two-norm, other distance functions like $1$-norm etc. are also possible. Both the $k$-means and the $k$-median problem have been shown to be NP-hard. However, they have been successfully employed in practice on a lot of applications. Hence, recent research aims to bridge this gap by arguing that clustering is easy if the data has some nice properties. One of the such properties is $\alpha$-center proximity. 
+Instead of the two-norm Euclidean distance metric, the $1$-norm Manhattan distance metric can also be used. Both the $k$-means and the $k$-median problem have been shown to be NP-hard. However, they have been successfully employed in practice on a lot of applications. Hence, recent research aims to bridge this gap by arguing that clustering is easy if the data has some nice properties. One of the such properties is $\alpha$-center proximity. 
 
 A clustering $\mc C = \{C_1, \ldots, C_k\}$ satisfies $\alpha$-center proximity w.r.t $\mc X$ and $k$ if there exist centers $c_1, \ldots, c_k$  such that for all $x \in C_i$ and $i\neq j$, $$\alpha d(x, c_i) < d(x, c_j)$$
 
