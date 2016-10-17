@@ -35,6 +35,7 @@
 
 \usepackage[disable]{todonotes}
 
+\newcommand{\mc}{\mathcal}
 
 \title{Proposal for CS798, 2016 Fall\\ \large Optimization for Machine Learning}
 
@@ -65,17 +66,36 @@ In this section you are going to present a brief background and motivation about
 \section{Related Works}
 Perform an initial review of relevant literature. Has your problem, or one of similar nature, been considered before? By whom? What are the differences or limitations (if any)? 
 
+The $k$-means algorithm tries to find a clustering which minimizes the following objective function
+\begin{align*}
+	\min_{c_1, \ldots, c_k} \sum_{i=1}^k \sum_{x \in C_i} \|x-c_i\|_2^2 
+\end{align*}
+The $k$-median objective is similar to the $k$-means objective. An important distinction is that the centers $c_1, \ldots, c_k$ are restricted to come from the input data $\mc X$. The optimization problem is the following 
+\begin{align*}
+	\min_{c_1, \ldots, c_k \in \mc X} \sum_{i=1}^k \sum_{x \in C_i} \|x-c_i\|_2 
+\end{align*}
+Instead of the two-norm, other distance functions like $1$-norm etc. are also possible.
 \section{Proposed Work}
-In this section please concisely describe what you are going to achieve in this project. E.g., formulate the mathematical problem under consideration, present the technical challenges (if any), discuss the tools or datasets that you will build on, state your goals, and come up with a plan for evaluation.
+All the clustering algorithms discussed above are agnostic to the structure of the data. We want to pose an optimization problem which takes that into account. Clustering algorithm is essentially about choosing centers $c_1, \ldots, c_k$. What makes a `good center'? Intuitively a good center should have a `lot' of points close-by. Also, any two centers should be far apart from each other. We formulate the following optimization problem
+\begin{align*}
+	&\min_{c_1, \ldots, c_k \in \mc X} \sum_{i=1}^k \sum_{x \in N_t(c_i)} \|x-c_i\|_1 \\
+	& \text{such that } \|c_i - c_j\|_1 \ge \alpha  \sum_{x \in N_t(c_i)} \|x-c_i\|_1 \text{ for all }i, j
+\end{align*}
 
-For your own sake, you might want to lay out a time line, so that you can keep a good track of your project.
+Here, parameters $\alpha < 1$ and $t > 1$ are known to the optimization algorithm. $\alpha$ represents the separation between the two clusters. The higher the $\alpha$, the larger is the separation. $t$ represents how dense the neighbourhood around a center $c_i$ is. 
+
+For this project, we want to achieve the following:
+\begin{itemize}
+\item An algorithm to solve the above optimization problem OR prove that the optimization is NP-Hard. 
+\item If the above is (or `seems') NP-Hard then propose a relaxation.
+\item Show that if the data has some `nice' (suitable defined) structure, then our algorithm finds that structure.
+\item Implement the algorithm on a dataset (like MNIST, BagOfWords etc) and compare against other clustering algorithms.
+\end{itemize}
+
+%For your own sake, you might want to lay out a time line, so that you can keep a good track of your project.
 
 \section{Team}
-If you have teammates, state here the different roles of each person. Please be aware that each teammate will get the \emph{same} evaluation, so choose your teammate wisely. \uline{No excuse or regret once the team is formed}.
-
-
-\section*{Acknowledgement}
-Thank people who have helped or influenced you in this project.
+This project will be done by two people. Both the teammates will be equal contributors on the four directions mentioned above.
 
 \bibliographystyle{unsrtnat}
 \bibliography{proposal}
