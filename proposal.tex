@@ -68,15 +68,19 @@ Clustering is a technique of unsupervised learning that attempts to group data p
 \section{Related Works}
 Perform an initial review of relevant literature. Has your problem, or one of similar nature, been considered before? By whom? What are the differences or limitations (if any)? 
 
-The $k$-means algorithm tries to find a clustering which minimizes the following objective function
+The $k$-means and $k$-median are by far the two most popular clustering algorithm. $k$-means tries to find a clustering which minimizes the following objective function
 \begin{align*}
 	\min_{c_1, \ldots, c_k} \sum_{i=1}^k \sum_{x \in C_i} \|x-c_i\|_2^2 
 \end{align*}
-The $k$-median objective is similar to the $k$-means objective. An important distinction is that the centers $c_1, \ldots, c_k$ are restricted to come from the input data $\mc X$. The optimization problem is the following 
+The $k$-median objective is similar to the $k$-means objective. An important distinction is that the centers $c_1, \ldots, c_k$ are restricted to come from the input data $\mc X$. The optimization problem is
 \begin{align*}
 	\min_{c_1, \ldots, c_k \in \mc X} \sum_{i=1}^k \sum_{x \in C_i} \|x-c_i\|_2 
 \end{align*}
-Instead of the two-norm, other distance functions like $1$-norm etc. are also possible.
+Instead of the two-norm, other distance functions like $1$-norm etc. are also possible. Both the $k$-means and the $k$-median problem have been shown to be NP-Hard. However, they have been successfully employed in practice on a lot of applications. Hence, recent research aims to bridge this gap by arguing that clustering is easy if the data has some nice properties. One of the such properties is $\alpha$-center proximity. 
+
+A clustering $\mc C = \{C_1, \ldots, C_k\}$ satisfies $\alpha$-center proximity w.r.t $\mc X$ and $k$ if there exist centers $c_1, \ldots, c_k$  such that for all $x \in C_i$ and $i\neq j$, $$\alpha d(x, c_i) < d(x, c_j)$$
+
+Researchers have shown that if the optimal clustering satisfies $\alpha$-center proximity then it is possible to find the optimal solution in polynomial time. 
 \section{Proposed Work}
 All the clustering algorithms discussed above are agnostic to the structure of the data. We want to pose an optimization problem which takes that into account. Clustering algorithm is essentially about choosing centers $c_1, \ldots, c_k$. What makes a `good center'? Intuitively a good center should have a `lot' of points close-by. Also, any two centers should be far apart from each other. We formulate the following optimization problem
 \begin{align*}
